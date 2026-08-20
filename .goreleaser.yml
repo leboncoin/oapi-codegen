@@ -1,0 +1,29 @@
+version: 2
+
+builds:
+  - id: oapi-codegen
+    binary: oapi-codegen
+    main: ./cmd/oapi-codegen
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.noVCSVersionOverride=v{{ .Version }}
+
+archives:
+  - id: oapi-codegen
+    builds:
+      - oapi-codegen
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: tar.gz
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  disable: true
